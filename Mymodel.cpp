@@ -7,7 +7,7 @@ using namespace std;
 		size = para;
 		hand_zdir = -1;
 		leg_ydir = 1;
-		speed = -5.0;
+		speed = -10.0;
 		hand_up = 140;
 		hand_down = 120;
 		leg_range = 20;
@@ -264,10 +264,37 @@ using namespace std;
 	}
 
 	void Model::build(){
-
+		Mat cube = (Mat_<float>(8, 3));		
+		head.rowRange(0, 4).colRange(0, 2).copyTo(cube.rowRange(0, 4).colRange(0, 2));
+		cube.rowRange(0, 4).col(2) = 0;
+		head.rowRange(0, 4).colRange(0, 2).copyTo(cube.rowRange(4, 8).colRange(0, 2));
+		legLeft.rowRange(4, 8).col(2).copyTo(cube.rowRange(4, 8).col(2));
+		//cube.rowRange(4, 8).col(2) = (head.rowRange(0, 4).col(2) + ((float)260 * size / 100));
+		cout << ((float)260 * size / 100) << endl;
+		cout << cube.rowRange(4, 8).col(2) << endl;
+		cout << cube << endl;
+		modelPts.release();
+		modelPts.push_back(floor);
+		modelPts.push_back(head);
+		modelPts.push_back(body);
+		modelPts.push_back(legLeft);
+		modelPts.push_back(legRight);
+		modelPts.push_back(handLeft);
+		modelPts.push_back(handRight);
+		modelPts.push_back(cube);
 	}
 
 	void Model::updateModel(){
+		/*cout << "head" << head << endl;
+		cout << "before "<< modelPts.rowRange(4, 12) << endl;
+		floor.copyTo(modelPts.rowRange(0, 4));
+		head.copyTo(modelPts.rowRange(4, 12));
+		body.copyTo(modelPts.rowRange(12, 20));
+		legLeft.copyTo(modelPts.rowRange(20, 28));
+		legRight.copyTo(modelPts.rowRange(28, 36));
+		handLeft.copyTo(modelPts.rowRange(36, 44));
+		handRight.copyTo(modelPts.rowRange(44, 48) );
+		cout << modelPts.rowRange(4, 12) << endl;*/
 		modelPts.release();
 		modelPts.push_back(floor);
 		modelPts.push_back(head);

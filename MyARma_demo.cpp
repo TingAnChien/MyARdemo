@@ -130,7 +130,16 @@ int main(int argc, char** argv){
 				model[0].moveHand(2,1);
 				model[0].move(2, 1);//X:0 Y:1 sign
 			}
-			model[0].updateModel();
+			if (k == 101 || k == 113){
+				model[0].build();
+			}
+			if (model[0].modelPts.rows == 52){
+				model[0].updateModel();
+			}
+			else
+				model[0].build();
+
+
 			//draw model
 			detectedPattern.at(i).draw(imgMat, cameraMatrix, distortions, model[0].modelPts);
 		}

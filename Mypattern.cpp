@@ -110,6 +110,11 @@ namespace myARma {
 
 		//head
 		line(frame, model2ImagePts, color, 4);
+		cout << (modelPts.rows - 4) / 8 << endl;
+		for (int i = 1; i < (modelPts.rows - 4) / 8; i++){
+			line(frame, model2ImagePts, color, 4+8*i);
+		}
+		/*
 		//body
 		line(frame, model2ImagePts, color, 12);
 		//leg
@@ -118,9 +123,11 @@ namespace myARma {
 		//hand
 		line(frame, model2ImagePts, color, 36);//left
 		line(frame, model2ImagePts, color, 44);//right
+		*/
+		cout << modelPts.rows << endl;
 
 		//draw the line that reflects the orientation. It indicates the bottom side of the pattern
-		cv::line(frame, model2ImagePts.at(9), model2ImagePts.at(10), cvScalar(80, 255, 80), 3);
+		cv::line(frame, model2ImagePts.at(9), model2ImagePts.at(10), cvScalar(0, 0, 255), 3);
 		model2ImagePts.clear();
 	}
 

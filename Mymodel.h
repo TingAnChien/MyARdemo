@@ -7,7 +7,7 @@ using namespace cv;
 
 class Model	{
 	public:
-		double size;
+		float size;
 		Mat modelPts;
 		Mat floor;
 		Mat head;
