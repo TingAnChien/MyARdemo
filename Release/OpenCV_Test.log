@@ -1,0 +1,19 @@
+﻿已經開始建置於 2016/1/11 上午 04:30:54。
+     1>節點 2 (Build 目標) 上的專案 "C:\Users\tingan\documents\visual studio 2013\Projects\OpenCV_Test\OpenCV_Test\OpenCV_Test.vcxproj"。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\opencv\build\x86\vc11\..\..\include /ID:\opencv\build\x86\vc11\..\..\include\opencv /ID:\opencv\build\x86\vc11\..\..\include\opencv2 /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt MyARma_demo.cpp
+         MyARma_demo.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tingan\documents\visual studio 2013\Projects\OpenCV_Test\Release\OpenCV_Test.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:D:\opencv\build\x86\vc11\lib opencv_calib3d249.lib opencv_contrib249.lib opencv_core249.lib opencv_features2d249.lib opencv_flann249.lib opencv_gpu249.lib opencv_highgui249.lib opencv_imgproc249.lib opencv_legacy249.lib opencv_ml249.lib opencv_objdetect249.lib opencv_ts249.lib opencv_video249.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tingan\documents\visual studio 2013\Projects\OpenCV_Test\Release\OpenCV_Test.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tingan\documents\visual studio 2013\Projects\OpenCV_Test\Release\OpenCV_Test.lib" /MACHINE:X86 /SAFESEH Release\MyARma_demo.obj
+         Release\Mymodel.obj
+         Release\Mypattern.obj
+         Release\Mypatterndetector.obj
+         正在產生程式碼
+     1>c:\users\tingan\documents\visual studio 2013\projects\opencv_test\opencv_test\mymodel.cpp(264): warning C4715: 'Model::getOrientation' : 不是所有控制路徑都傳回值
+         已完成程式碼產生
+         OpenCV_Test.vcxproj -> C:\Users\tingan\documents\visual studio 2013\Projects\OpenCV_Test\Release\OpenCV_Test.exe
+     1>專案 "C:\Users\tingan\documents\visual studio 2013\Projects\OpenCV_Test\OpenCV_Test\OpenCV_Test.vcxproj" (Build 目標) 建置完成。
+
+建置成功。
+
+經過時間 00:00:06.17
