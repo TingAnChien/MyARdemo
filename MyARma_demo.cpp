@@ -47,7 +47,7 @@ int main(int argc, char** argv){
 
 	PatternDetector myDetector( fixed_thresh, adapt_thresh, adapt_block_size, confidenceThreshold, norm_pattern_size, mode);
 
-	CvCapture* capture = cvCaptureFromCAM(0);
+	CvCapture* capture = cvCaptureFromCAM(1);
 	
 	Mat imgMat;
 	vector<Model> model;
@@ -66,86 +66,41 @@ int main(int argc, char** argv){
 		for (unsigned int i =0; i<detectedPattern.size(); i++){
 			//cout << "key=" << k << endl;
 			//keyboard setting
-			if (k == 115){ //back
-				orientation = model[0].getOrientation();
-				if (orientation == 3){
-					model[0].move(1, 1);//X:0 Y:1 Z:2 sign
-					model[0].moveHand(2,1);
-					model[0].moveLeg(1,1);//X:0 Y:1 sign
-				}
-				else if (orientation == 4)
-					model[0].turn(PI / 2);
-				else if (orientation == 1)
-					model[0].turn(PI );
-				else if (orientation == 2)
-					model[0].turn(-PI / 2);
+			switch (k){
+				case 115://back
+					model[0].goBack();
+					break;
+				case 119://forward
+					model[0].goFoward();
+					break;
+				case 97://left
+					model[0].goLeft();
+					break;
+				case 100://rigth
+					model[0].goRight();
+					break;
+				case 101: //up
+					model[0].goUp();
+					break;
+				case 113://down
+					model[0].goDown();
+					break;
 			}
-			if (k == 119){ //forward
-				orientation = model[0].getOrientation();
-				if (orientation == 1){
-					model[0].move(1, -1);//X:0 Y:1 sign
-					model[0].moveHand(2, 1);
-					model[0].moveLeg(1,-1);
-				}
-				else if (orientation == 2)
-					model[0].turn(PI / 2);
-				else if (orientation == 3)
-					model[0].turn(PI);
-				else if (orientation == 4)
-					model[0].turn(-PI / 2);
-			}
-			if (k == 97){ //left
-				orientation = model[0].getOrientation();
-				if (orientation == 2){
-					model[0].move(0, -1);//X:0 Y:1 sign
-					model[0].moveHand(2, 1);
-					model[0].moveLeg(0,-1);
-				}
-				else if (orientation == 3)
-					model[0].turn(PI / 2);
-				else if (orientation == 4)
-					model[0].turn(PI);
-				else if (orientation == 1)
-					model[0].turn(-PI / 2);
-			}
-			if (k == 100){ //rigth
-				orientation = model[0].getOrientation();
-				if (orientation == 4){
-					model[0].move(0, 1);//X:0 Y:1 sign
-					model[0].moveHand(2, 1);
-					model[0].moveLeg(0,1);
-				}
-				else if (orientation == 1)
-					model[0].turn(PI / 2);
-				else if (orientation == 2)
-					model[0].turn(PI);
-				else if (orientation == 3)
-					model[0].turn(-PI / 2);
-			}
-			if (k == 101){ //up
-				model[0].moveHand(2,1);
-				model[0].move(2, -1);//X:0 Y:1 Z:2 sign
-			}
-			if (k == 113){ //down
-				model[0].moveHand(2,1);
-				model[0].move(2, 1);//X:0 Y:1 sign
-			}
+
 			if (k == 101 || k == 113){
 				model[0].build();
 			}
-			if (model[0].modelPts.rows == 52){
+			if (model[0].modelPts.rows == 60){
 				model[0].updateModel();
 			}
 			else
 				model[0].build();
-
-
 			//draw model
 			detectedPattern.at(i).draw(imgMat, cameraMatrix, distortions, model[0].modelPts);
 		}
 		
 		imshow("result", imgMat);
-		k = cvWaitKey(100);
+		k = cvWaitKey(30);
 		//cout << "Press" << k << endl;
 		
 

@@ -12,12 +12,21 @@ using namespace std;
 		hand_down = 120;
 		leg_range = 20;
 		hand_range = 20;
+		ChangeHand = false;
 
-		floor = (Mat_<float>(4, 3) <<
+		face = (Mat_<float>(12, 3) <<
 			0, 0, 0,
-			100, 0, 0,
-			100, 100, 0,
-			0, 100, 0       //3 floor	
+			50, 90, -170,
+			55, 90, -165,
+			45, 90, -165,//mouse
+			30, 90, -200,
+			40, 90, -200,
+			40, 90, -190,
+			30, 90, -190,//eye
+			60, 90, -200,
+			70, 90, -200,
+			70, 90, -190,
+			60, 90, -190      //3 face	
 			)*size / 100;
 		head = (Mat_<float>(8, 3) <<
 			10, 10, -230,
@@ -79,38 +88,42 @@ using namespace std;
 			120, 45, -125,
 			120, 45, -140         //51 hand right		
 			)*size / 100;
+		handLeftWalk = (Mat_<float>(8, 3) <<
+			5, 45, -135,
+			5, 60, -135,
+			20, 60, -135,
+			20, 45, -135,     //23
+			5, 45, -75,
+			5, 60, -75,
+			20, 60, -75,
+			20, 45, -75         //27 leg left
+			)*size / 100;
+		handRightWalk = (Mat_<float>(8, 3) <<
+			95, 45, -135,
+			95, 60, -135,
+			80, 60, -135,
+			80, 45, -135,     //23
+			95, 45, -75,
+			95, 60, -75,
+			80, 60, -75,
+			80, 45, -75         //27 leg left
+			)*size / 100;
 
-		modelPts.push_back(floor);
+		modelPts.push_back(face);
 		modelPts.push_back(head);
 		modelPts.push_back(body);
 		modelPts.push_back(legLeft);
 		modelPts.push_back(legRight);
-		modelPts.push_back(handLeft);
-		modelPts.push_back(handRight);
-	}
-	/*
-	void Model::moveHand(){
-
-		if (hand_zdir < 0){
-			if ((-handLeft.at<float>(4, 2)) >= (hand_down * size / 100)){
-				//cout << handLeft.at<float>(4, 2) << endl;
-				//cout << (120 * size / 100) << endl;
-				handLeft.rowRange(4, 8).col(2) -= speed*size / 100;
-				handRight.rowRange(4, 8).col(2) -= speed*size / 100;
-			}
-			else
-				hand_zdir = 1;
+			if (ChangeHand){
+				modelPts.push_back(handLeft);
+				modelPts.push_back(handRight);
 		}
 		else{
-			if ((-handLeft.at<float>(4, 2)) <= (hand_up * size / 100)){
-				handLeft.rowRange(4, 8).col(2) += (0, 0, speed)*size / 100;
-				handRight.rowRange(4, 8).col(2) += (0, 0, speed)*size / 100;
-			}
-			else
-				hand_zdir = -1;
+			modelPts.push_back(handLeftWalk);
+			modelPts.push_back(handRightWalk);
 		}
 	}
-	*/
+
 	void Model::moveLeg(int c, int s){
 		float src_center = (head.at<float>(0, c) + head.at<float>(2, c)) / 2.0F;//x
 		if (s < 0){
@@ -118,6 +131,8 @@ using namespace std;
 				if ((legLeft.at<float>(4, c)) <= (src_center + leg_range* size / 100)){
 					legLeft.rowRange(4, 8).col(c) -= speed*size / 100;
 					legRight.rowRange(4, 8).col(c) += speed*size / 100;
+					handRightWalk.rowRange(4, 8).col(c) -= speed*size / 100;
+					handLeftWalk.rowRange(4, 8).col(c) += speed*size / 100;
 				}
 				else
 					leg_ydir = 1;
@@ -126,6 +141,8 @@ using namespace std;
 				if ((legLeft.at<float>(4, c)) >= src_center){
 					legLeft.rowRange(4, 8).col(c) += speed*size / 100;
 					legRight.rowRange(4, 8).col(c) -= speed*size / 100;
+					handRightWalk.rowRange(4, 8).col(c) += speed*size / 100;
+					handLeftWalk.rowRange(4, 8).col(c) -= speed*size / 100;
 				}
 				else
 					leg_ydir = -1;
@@ -136,6 +153,8 @@ using namespace std;
 				if ((legLeft.at<float>(4, c)) <= (src_center)){
 					legLeft.rowRange(4, 8).col(c) -= speed*size / 100;
 					legRight.rowRange(4, 8).col(c) += speed*size / 100;
+					handRightWalk.rowRange(4, 8).col(c) -= speed*size / 100;
+					handLeftWalk.rowRange(4, 8).col(c) += speed*size / 100;
 				}
 				else
 					leg_ydir = 1;
@@ -144,6 +163,8 @@ using namespace std;
 				if ((legLeft.at<float>(4, c)) >= (src_center - leg_range* size / 100)){
 					legLeft.rowRange(4, 8).col(c) += speed*size / 100;
 					legRight.rowRange(4, 8).col(c) -= speed*size / 100;
+					handRightWalk.rowRange(4, 8).col(c) += speed*size / 100;
+					handLeftWalk.rowRange(4, 8).col(c) -= speed*size / 100;
 				}
 				else
 					leg_ydir = -1;
@@ -193,10 +214,13 @@ using namespace std;
 
 	void Model::move(int c, int s){
 
+		face.col(c) -= speed*s*size / 100;
 		head.col(c) -= speed*s*size / 100;
 		body.col(c) -= speed*s*size / 100;
-		handLeft.col(c) -= speed*s*size / 100;
+		handLeft.col(c) -= speed*s*size / 100;//still need to move
 		handRight.col(c) -= speed*s*size / 100;
+		handLeftWalk.col(c) -= speed*s*size / 100;
+		handRightWalk.col(c) -= speed*s*size / 100;
 		legLeft.col(c) -= speed*s*size / 100;
 		legRight.col(c) -= speed*s*size / 100;
 
@@ -211,12 +235,19 @@ using namespace std;
 		rotate(body, src_center, angRad);
 		rotate(handLeft, src_center, angRad);
 		rotate(handRight, src_center, angRad);
+		rotate(handLeftWalk, src_center, angRad);
+		rotate(handRightWalk, src_center, angRad);
 		rotate(legLeft, src_center, angRad);
 		rotate(legRight, src_center, angRad);
-
-		//Point2f  tmp = (legLeft.at<float>(4, 0), leg_front);
-		//leg_front = rotatePoint(tmp, src_center, angRad).x;
-		//leg_end = rotatePoint(tmp, src_center, angRad).x;
+		//roate face 12 vertex
+		Point2f inPoint, outPoint;
+		for (int i = 0; i < 12; i++){
+			inPoint.x = face.at<float>(i, 0);
+			inPoint.y = face.at<float>(i, 1);
+			outPoint = rotatePoint(inPoint, src_center, angRad);
+			face.at<float>(i, 0) = outPoint.x;
+			face.at<float>(i, 1) = outPoint.y;
+		}
 	}
 
 	void Model::rotate(Mat part,Point2f src_center, double angRad){
@@ -270,24 +301,27 @@ using namespace std;
 		head.rowRange(0, 4).colRange(0, 2).copyTo(cube.rowRange(4, 8).colRange(0, 2));
 		legLeft.rowRange(4, 8).col(2).copyTo(cube.rowRange(4, 8).col(2));
 		//cube.rowRange(4, 8).col(2) = (head.rowRange(0, 4).col(2) + ((float)260 * size / 100));
-		cout << ((float)260 * size / 100) << endl;
-		cout << cube.rowRange(4, 8).col(2) << endl;
-		cout << cube << endl;
 		modelPts.release();
-		modelPts.push_back(floor);
+		modelPts.push_back(face);
 		modelPts.push_back(head);
 		modelPts.push_back(body);
 		modelPts.push_back(legLeft);
 		modelPts.push_back(legRight);
-		modelPts.push_back(handLeft);
-		modelPts.push_back(handRight);
+		if (ChangeHand){
+			modelPts.push_back(handLeft);
+			modelPts.push_back(handRight);
+		}
+		else{
+			modelPts.push_back(handLeftWalk);
+			modelPts.push_back(handRightWalk);
+		}
 		modelPts.push_back(cube);
 	}
 
 	void Model::updateModel(){
 		/*cout << "head" << head << endl;
 		cout << "before "<< modelPts.rowRange(4, 12) << endl;
-		floor.copyTo(modelPts.rowRange(0, 4));
+		face.copyTo(modelPts.rowRange(0, 4));
 		head.copyTo(modelPts.rowRange(4, 12));
 		body.copyTo(modelPts.rowRange(12, 20));
 		legLeft.copyTo(modelPts.rowRange(20, 28));
@@ -296,13 +330,94 @@ using namespace std;
 		handRight.copyTo(modelPts.rowRange(44, 48) );
 		cout << modelPts.rowRange(4, 12) << endl;*/
 		modelPts.release();
-		modelPts.push_back(floor);
+		modelPts.push_back(face);
 		modelPts.push_back(head);
 		modelPts.push_back(body);
 		modelPts.push_back(legLeft);
 		modelPts.push_back(legRight);
-		modelPts.push_back(handLeft);
-		modelPts.push_back(handRight);
+		if (ChangeHand){
+			modelPts.push_back(handLeft);
+			modelPts.push_back(handRight);
+		}
+		else{
+			modelPts.push_back(handLeftWalk);
+			modelPts.push_back(handRightWalk);
+		}
 		//cout << "old " << modelPts.rowRange(0, 4).col(1) << endl;
 		//modelPts.rowRange(0, 52).col(1) += speed*size / 100;
+	}
+
+	void Model::goBack(){
+		int orientation =getOrientation();
+		if (orientation == 3){
+			move(1, 1);//X:0 Y:1 Z:2 sign
+			//moveHand(2, 1);
+			moveLeg(1, 1);//X:0 Y:1 sign
+		}
+		else if (orientation == 4)
+			turn(PI / 2);
+		else if (orientation == 1)
+			turn(PI);
+		else if (orientation == 2)
+			turn(-PI / 2);
+		ChangeHand = false;
+	}
+
+	void Model::goFoward(){
+		int orientation = getOrientation();
+		orientation = getOrientation();
+		if (orientation == 1){
+			move(1, -1);//X:0 Y:1 sign
+			//moveHand(2, 1);
+			moveLeg(1, -1);
+		}
+		else if (orientation == 2)
+			turn(PI / 2);
+		else if (orientation == 3)
+			turn(PI);
+		else if (orientation == 4)
+			turn(-PI / 2);
+		ChangeHand = false;
+	}
+	void Model::goLeft(){
+		int orientation = getOrientation();
+		orientation = getOrientation();
+		if (orientation == 2){
+			move(0, -1);//X:0 Y:1 sign
+			//moveHand(2, 1);
+			moveLeg(0, -1);
+		}
+		else if (orientation == 3)
+			turn(PI / 2);
+		else if (orientation == 4)
+			turn(PI);
+		else if (orientation == 1)
+			turn(-PI / 2);
+		ChangeHand = false;
+	}
+	void Model::goRight(){
+		int orientation = getOrientation();
+		orientation = getOrientation();
+		if (orientation == 4){
+			move(0, 1);//X:0 Y:1 sign
+			//moveHand(2, 1);
+			moveLeg(0, 1);
+		}
+		else if (orientation == 1)
+			turn(PI / 2);
+		else if (orientation == 2)
+			turn(PI);
+		else if (orientation == 3)
+			turn(-PI / 2);
+		ChangeHand = false;
+	}
+	void Model::goUp(){
+		moveHand(2, 1);
+		move(2, -1);//X:0 Y:1 Z:2 sign
+		ChangeHand = true;
+	}
+	void Model::goDown(){
+		moveHand(2, 1);
+		move(2, 1);//X:0 Y:1 sign
+		ChangeHand = true;
 	}

@@ -9,13 +9,15 @@ class Model	{
 	public:
 		float size;
 		Mat modelPts;
-		Mat floor;
+		Mat face;
 		Mat head;
 		Mat body;
 		Mat legLeft;
 		Mat legRight;
 		Mat handLeft;
 		Mat handRight;
+		Mat handLeftWalk;
+		Mat handRightWalk;
 		int hand_zdir;
 		int leg_ydir;
 		float speed;
@@ -25,31 +27,27 @@ class Model	{
 		float leg_end;
 		float leg_range;
 		float hand_range;
+		bool ChangeHand;
 
 		Model(double para = 50);
 
 		~Model(){};
 		
-		//void moveHand();
-
+		void goBack();
+		void goFoward();
+		void goLeft();
+		void goRight();
+		void goUp();
+		void goDown();
 		void moveLeg(int c, int s);
-
 		void moveHand(int c, int s);
-
 		void move(int c,int s);
-
 		void turn(double angRad);
-
 		void rotate(Mat part, Point2f src_center, double angRad);
-
 		Point2f rotate2d(const cv::Point2f& inPoint, const double& angRad);
-
 		Point2f rotatePoint(const cv::Point2f& inPoint, const cv::Point2f& center, const double& angRad);
-
 		int getOrientation();
-
 		void build();
-
 		void updateModel();
 
 	};

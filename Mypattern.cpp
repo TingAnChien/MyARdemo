@@ -109,25 +109,26 @@ namespace myARma {
 		//draw cube, or whatever
 
 		//head
-		line(frame, model2ImagePts, color, 4);
-		cout << (modelPts.rows - 4) / 8 << endl;
-		for (int i = 1; i < (modelPts.rows - 4) / 8; i++){
-			line(frame, model2ImagePts, color, 4+8*i);
-		}
-		/*
-		//body
 		line(frame, model2ImagePts, color, 12);
-		//leg
-		line(frame, model2ImagePts, color, 20);//left
-		line(frame, model2ImagePts, color, 28);//right
-		//hand
-		line(frame, model2ImagePts, color, 36);//left
-		line(frame, model2ImagePts, color, 44);//right
-		*/
-		cout << modelPts.rows << endl;
+		//cout << (modelPts.rows - 12) / 8 << endl;
+		for (int i = 1; i < (modelPts.rows - 12) / 8; i++){
+			line(frame, model2ImagePts, color, 12+8*i);
+		}
+
+		cv::line(frame, model2ImagePts.at(1), model2ImagePts.at(2), color, 2);
+		cv::line(frame, model2ImagePts.at(2), model2ImagePts.at(3), color, 2);
+		cv::line(frame, model2ImagePts.at(1), model2ImagePts.at(3), color, 2);
+
+		for (int i = 0; i<4; i++){
+			cv::line(frame, model2ImagePts.at(i % 4 + 4), model2ImagePts.at((i + 1) % 4 + 4), color, 2);
+		}
+
+		for (int i = 0; i<4; i++){
+			cv::line(frame, model2ImagePts.at(i % 4 + 8), model2ImagePts.at((i + 1) % 4 + 8), color, 2);
+		}
 
 		//draw the line that reflects the orientation. It indicates the bottom side of the pattern
-		cv::line(frame, model2ImagePts.at(9), model2ImagePts.at(10), cvScalar(0, 0, 255), 3);
+		//cv::line(frame, model2ImagePts.at(21), model2ImagePts.at(22), cvScalar(0, 0, 255), 3);
 		model2ImagePts.clear();
 	}
 
