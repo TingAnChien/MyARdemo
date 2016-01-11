@@ -13,6 +13,7 @@ using namespace std;
 		leg_range = 20;
 		hand_range = 20;
 		ChangeHand = false;
+		ChangeDirect = false;
 
 		face = (Mat_<float>(12, 3) <<
 			0, 0, 0,
@@ -294,6 +295,13 @@ using namespace std;
 		}
 	}
 
+	Point3f Model::getCenter(){
+		float cols = head.at<float>(0, 0) + head.at<float>(2, 0);//x
+		float rows = head.at<float>(0, 1) + head.at<float>(2, 1);//y
+		//cout << "getcenter" << Point3f(cols / 2.0F, rows / 2.0F, legLeft.at<float>(4, 2)) << endl;
+		return Point3f(cols / 2.0F, rows / 2.0F, legLeft.at<float>(4,2));
+	}
+
 	void Model::build(){
 		Mat cube = (Mat_<float>(8, 3));		
 		head.rowRange(0, 4).colRange(0, 2).copyTo(cube.rowRange(0, 4).colRange(0, 2));
@@ -420,4 +428,163 @@ using namespace std;
 		moveHand(2, 1);
 		move(2, 1);//X:0 Y:1 sign
 		ChangeHand = true;
+	}
+
+	void Model::goTo(Point3f target, int orientation){
+		Point3f current = getCenter();
+		int current_orientation = getOrientation();
+		cout << "orientation = " << orientation << endl;
+		cout << "current = " << current << endl;
+		cout << "target = " << target << endl;
+		if (orientation == 3){
+			if ((current.y - target.y) < -50 && !ChangeDirect){
+				goBack();
+				cout << "goBack" << endl;
+			}
+			else if ((current.y - target.y) > -50 && !ChangeDirect){
+				goFoward();
+				cout << "goFoward" << endl;
+			}
+			else{
+				ChangeDirect = true;
+				if ((current.x - target.x) > 0){
+					goLeft();
+					cout << "goLeft" << endl;
+				}
+				else if ((current.x - target.x) < 0){
+					goRight();
+					cout << "goRight" << endl;
+				}
+				else{
+					if (current_orientation == 4)
+						turn(PI/2);
+					else if (current_orientation == 2)
+						turn(-PI / 2);
+					ChangeDirect = false;
+				}
+			}
+		}
+		if (orientation == 1){
+			if ((current.y - target.y) < 50 && !ChangeDirect){
+				goBack();
+				cout << "goBack" << endl;
+			}
+			else if ((current.y - target.y) > 50 && !ChangeDirect){
+				goFoward();
+				cout << "goFoward" << endl;
+			}
+			else{
+				ChangeDirect = true;
+				if ((current.x - target.x) > 0){
+					goLeft();
+					cout << "goLeft" << endl;
+				}
+				else if ((current.x - target.x) < 0){
+					goRight();
+					cout << "goRight" << endl;
+				}
+				else{
+					if (current_orientation == 4)
+						turn(-PI / 2);
+					else if (current_orientation == 2)
+						turn(PI / 2);
+					ChangeDirect = false;
+				}
+			}
+		}
+
+		if (orientation == 2){
+			if ((current.x - target.x) > 50 && !ChangeDirect){
+				goLeft();
+				cout << "goLeft" << endl;
+			}
+			else if ((current.x - target.x) < 50 && !ChangeDirect){
+				goRight();
+				cout << "goRight" << endl;
+			}
+			else{
+				ChangeDirect = true;
+				if ((current.y - target.y) < 0){
+					goBack();
+					cout << "goBack" << endl;
+				}
+				else if ((current.y - target.y) > 0){
+					goFoward();
+					cout << "goFoward" << endl;
+				}				
+				else{
+					if (current_orientation == 3)
+						turn(PI / 2);
+					else if (current_orientation == 1)
+						turn(-PI / 2);
+					ChangeDirect = false;
+				}
+			}
+		}
+		if (orientation == 4){
+			if ((current.x - target.x) > -50 && !ChangeDirect){
+				goLeft();
+				cout << "goLeft" << endl;
+			}
+			else if ((current.x - target.x) < -50 && !ChangeDirect){
+				goRight();
+				cout << "goRight" << endl;
+			}
+			else{
+				ChangeDirect = true;
+				if ((current.y - target.y) < 0){
+					goBack();
+					cout << "goBack" << endl;
+				}
+				else if ((current.y - target.y) > 0){
+					goFoward();
+					cout << "goFoward" << endl;
+				}
+				else{
+					if (current_orientation == 3)
+						turn(-PI / 2);
+					else if (current_orientation == 1)
+						turn(PI / 2);
+					ChangeDirect = false;
+				}
+			}
+		}
+		/*
+		if ((current.y - target.y) < 0 && abs(current.y - target.y) > 50 && !ChangeDirect){
+			goBack();
+			cout << "goBack" << endl;
+		}
+		else if ((current.y - target.y) > 0 && abs(current.y - target.y) > 50 && !ChangeDirect){
+			goFoward();
+			cout << "goFoward" << endl;
+		}
+		else{
+			ChangeDirect = true;
+			if ((current.x - target.x) > 0 ){
+				goLeft();
+				cout << "goLeft" << endl;
+			}
+			else if ((current.x - target.x) < 0){
+				goRight();
+				cout << "goRight" << endl;
+			}
+			else
+				ChangeDirect = false;
+		}*/
+
+
+		modelPts.release();
+		modelPts.push_back(face);
+		modelPts.push_back(head);
+		modelPts.push_back(body);
+		modelPts.push_back(legLeft);
+		modelPts.push_back(legRight);
+		if (ChangeHand){
+			modelPts.push_back(handLeft);
+			modelPts.push_back(handRight);
+		}
+		else{
+			modelPts.push_back(handLeftWalk);
+			modelPts.push_back(handRightWalk);
+		}
 	}

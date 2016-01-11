@@ -57,47 +57,63 @@ int main(int argc, char** argv){
 		
 		IplImage* img = cvQueryFrame(capture);
 		Mat imgMat = Mat(img);
-		double tic=(double)cvGetTickCount();
+		Point3f target;
 
 		//run the detector
 		myDetector.detect(imgMat, cameraMatrix, distortions, patternLibrary, detectedPattern); 
 		
 		//augment the input frame (and print out the properties of pattern if you want)
-		for (unsigned int i =0; i<detectedPattern.size(); i++){
-			//cout << "key=" << k << endl;
-			//keyboard setting
-			switch (k){
-				case 115://back
-					model[0].goBack();
-					break;
-				case 119://forward
-					model[0].goFoward();
-					break;
-				case 97://left
-					model[0].goLeft();
-					break;
-				case 100://rigth
-					model[0].goRight();
-					break;
-				case 101: //up
-					model[0].goUp();
-					break;
-				case 113://down
-					model[0].goDown();
-					break;
-			}
+		if (detectedPattern.size() != 0){
+			for (unsigned int i = 0; i<model.size(); i++){
+				//cout << "key=" << k << endl;
+				//keyboard setting
+				if (i == 0){//model by player
+					switch (k){
+					case 115://back
+						model[i].goBack();
+						break;
+					case 119://forward
+						model[i].goFoward();
+						break;
+					case 97://left
+						model[i].goLeft();
+						break;
+					case 100://rigth
+						model[i].goRight();
+						break;
+					case 101: //up
+						model[i].goUp();
+						break;
+					case 113://down
+						model[i].goDown();
+						break;
+					case 112:
+						Model tmp;
+						model.push_back(tmp);
+						break;
+					}
 
-			if (k == 101 || k == 113){
-				model[0].build();
+					if (k == 101 || k == 113){
+						model[i].build();
+					}
+					if (model[i].modelPts.rows == 60){
+						model[i].updateModel();
+					}
+					else
+						model[i].build();
+				}
+				else{
+					target = model[i-1].getCenter();
+					orientation = model[i - 1].getOrientation();
+					//target = model[0].getCenter();
+					//cout << "target = "  << target << endl;
+					model[i].goTo(target,orientation);
+				}
+				//draw model
+				detectedPattern.at(0).draw(imgMat, cameraMatrix, distortions, model[i].modelPts, i);
 			}
-			if (model[0].modelPts.rows == 60){
-				model[0].updateModel();
-			}
-			else
-				model[0].build();
-			//draw model
-			detectedPattern.at(i).draw(imgMat, cameraMatrix, distortions, model[0].modelPts);
 		}
+		
 		
 		imshow("result", imgMat);
 		k = cvWaitKey(30);

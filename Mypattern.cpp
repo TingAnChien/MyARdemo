@@ -76,7 +76,7 @@ namespace myARma {
 		Mat tvec = cvarrToMat(&tra,true);
 	}
 
-	void Pattern::draw(Mat& frame, const Mat& camMatrix, const Mat& distMatrix, Mat modelPts)
+	void Pattern::draw(Mat& frame, const Mat& camMatrix, const Mat& distMatrix, Mat modelPts,int id)
 	{
 		/*for(int i=0;i<vertices.size();i++){
 			rectangle(frame,Point(vertices[i].x-5,vertices[i].y-5),Point(vertices[i].x+5,vertices[i].y+5),Scalar(0,0,i*50),3,8);
@@ -85,14 +85,11 @@ namespace myARma {
 		CvScalar color = cvScalar(255,255,255);
 		
 		switch (id){
-			case 1:
-				 color = cvScalar(255,0,255);
-				break;
-			case 2:
+			case 0:
 				 color = cvScalar(255,255,0);
 				break;
-			case 3:
-				 color = cvScalar(0,255,255);
+			default:
+				 color = cvScalar(255,0,255);
 				break;
 		}
 

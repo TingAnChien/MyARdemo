@@ -28,6 +28,7 @@ class Model	{
 		float leg_range;
 		float hand_range;
 		bool ChangeHand;
+		bool ChangeDirect;
 
 		Model(double para = 50);
 
@@ -47,8 +48,10 @@ class Model	{
 		Point2f rotate2d(const cv::Point2f& inPoint, const double& angRad);
 		Point2f rotatePoint(const cv::Point2f& inPoint, const cv::Point2f& center, const double& angRad);
 		int getOrientation();
+		Point3f getCenter();
 		void build();
 		void updateModel();
+		void goTo(Point3f target, int orientation);
 
 	};
 
