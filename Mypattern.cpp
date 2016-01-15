@@ -89,7 +89,7 @@ namespace myARma {
 				 color = cvScalar(255,255,0);
 				break;
 			default:
-				 color = cvScalar(255,0,255);
+				 color = cvScalar(150,0,255);
 				break;
 		}
 

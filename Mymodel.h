@@ -28,7 +28,7 @@ class Model	{
 		float leg_range;
 		float hand_range;
 		bool ChangeHand;
-		bool ChangeDirect;
+		bool Build;
 
 		Model(double para = 50);
 

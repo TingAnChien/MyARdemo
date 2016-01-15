@@ -1,7 +1,8 @@
-﻿已經開始建置於 2016/1/11 下午 02:46:16。
+﻿已經開始建置於 2016/1/13 上午 12:08:36。
      1>節點 2 (Build 目標) 上的專案 "C:\Users\tingan\Documents\Visual Studio 2013\Projects\OpenCV_Test\MyARdemo\OpenCV_Test.vcxproj"。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\opencv\build\x86\vc11\..\..\include /ID:\opencv\build\x86\vc11\..\..\include\opencv /ID:\opencv\build\x86\vc11\..\..\include\opencv2 /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Mymodel.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ID:\opencv\build\x86\vc11\..\..\include /ID:\opencv\build\x86\vc11\..\..\include\opencv /ID:\opencv\build\x86\vc11\..\..\include\opencv2 /Zi /nologo /W3 /WX- /sdl /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt MyARma_demo.cpp Mymodel.cpp
+         MyARma_demo.cpp
          Mymodel.cpp
      1>Mymodel.cpp(7): warning C4244: '=' : 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
      1>Mymodel.cpp(269): warning C4244: '=' : 將 'double' 轉換為 'float'，由於類型不同，可能導致資料遺失
@@ -19,4 +20,4 @@
 
 建置成功。
 
-經過時間 00:00:23.69
+經過時間 00:00:45.47

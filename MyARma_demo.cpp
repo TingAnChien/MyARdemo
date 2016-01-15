@@ -48,11 +48,18 @@ int main(int argc, char** argv){
 	PatternDetector myDetector( fixed_thresh, adapt_thresh, adapt_block_size, confidenceThreshold, norm_pattern_size, mode);
 
 	CvCapture* capture = cvCaptureFromCAM(1);
-	
+	if (!capture){
+		cout << "Using default camera" << endl;
+		capture = cvCaptureFromCAM(0);
+	}
+	if (!capture){
+		cout << "No camera detected" << endl;
+	}
 	Mat imgMat;
 	vector<Model> model;
 	model.resize(1);
 	int k=0 , orientation;
+	vector<int> order, posY;
 	while(1){ //modify it for longer/shorter videos
 		
 		IplImage* img = cvQueryFrame(capture);
@@ -108,12 +115,25 @@ int main(int argc, char** argv){
 					//target = model[0].getCenter();
 					//cout << "target = "  << target << endl;
 					model[i].goTo(target,orientation);
+				}				
+				//determine the drawing order by position in y axis
+				if (i == 0){
+					order.push_back(0);
 				}
-				//draw model
-				detectedPattern.at(0).draw(imgMat, cameraMatrix, distortions, model[i].modelPts, i);
+				else if (model[i - 1].getCenter().y >= model[i].getCenter().y){
+					order.insert(order.begin(), i);
+				}
+				else if (model[i - 1].getCenter().y < model[i].getCenter().y){
+					order.push_back(i);
+				}
 			}
-		}
-		
+			//draw in order
+			for (unsigned int i = 0; i<model.size(); i++){
+				//draw model in inverse order
+				detectedPattern.at(0).draw(imgMat, cameraMatrix, distortions, model[order[i]].modelPts, order[i]);
+			}
+			order.clear();
+		}	
 		
 		imshow("result", imgMat);
 		k = cvWaitKey(30);
