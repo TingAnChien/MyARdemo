@@ -1,11 +1,5 @@
 # Brief
-This project is an simple AR demo by using OpenCV. I draw an little box man and display it
-on the scene capture by the webcam.
-
-To create an augmented reality, we need an reference such as an AR tag. Then we use the 
-information given by the detection of the tag, which should be loaded into pattern library in 
-advance. After detecting the pattern, then we can find the extrinsic parameter of camera. 
-So we can transform the 3D model to 2D and draw it on image plane. 
+This project is a simple AR demo by using OpenCV. I draw a simple model(the little box man) and display it on the scene capture by the webcam. I get the camera extrinsic parameter by detecting the AR tag as reference, ,then transform the 3D model to 2D and display it on the screen.
 
 Here is the [demo video](https://www.youtube.com/watch?v=kr7XexDnWBU).
 
